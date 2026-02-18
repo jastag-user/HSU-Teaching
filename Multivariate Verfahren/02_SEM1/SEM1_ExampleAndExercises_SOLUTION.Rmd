@@ -96,7 +96,7 @@ If mom_iq remains constant, and mom_age increases by one unit, the predicted kid
 We want to investigate if the subjects' age (age) and cigarettes smoked per day (cigday) are predictive of motivation to quit smoking (MQS). 
 
 ```{r}
-load("C:/Users/freulif/Desktop/Lezioni2025/SEM1/dataset/electrosmoke.rda")
+load(url("http://jastag.org/data/electrosmoke.rda"))
 ```
 
 ![Model 2](model1.png)
@@ -196,7 +196,7 @@ mean structure = $\beta_0$
 6. Estimate the model with lavaan. 
 
 ```{r}
-load("C:/Users/freulif/Desktop/Lezioni2025/SEM1/dataset/SubstanceUse.Rdata")
+load(url("http://jastag.org/data/SubstanceUse.Rdata"))
 
 mod <- 'Adolescent_Substance ~ 1+ SocioEconomic_status + Family_Environment+
 Family_Environment+Parental_Substance
@@ -229,7 +229,7 @@ Keeping all other predictors constant, if Parentl_Sbstnc increases by one unit, 
 A researcher wants to investigate if the level of education and gender can predict gross salary. To conduct the study, they recruit a sample of $n$ individuals, representing various genders and educational levels. For each participant, the researcher records their monthly gross salary.
 
 ```{r}
-load("C:/Users/freulif/Desktop/Lezioni2025/SEM1/dataset/salary.RData")
+load(url("http://jastag.org/data/salary.RData"))
 ```
 
 1. Estimate the model using the lavaan syntax.
