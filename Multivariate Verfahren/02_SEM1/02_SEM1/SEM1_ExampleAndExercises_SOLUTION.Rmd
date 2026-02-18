@@ -1,0 +1,256 @@
+---
+title: 'Structural equation models: first practical approach'
+output: word_document
+date: "2025-01-14"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Example
+
+We want to predict the intelligence of children by the intelligence of their mothers and their age.
+
+1. Display the model graphically and write down the model equation.
+
+![Model 1](model2.png)
+
+
+2. What type of model is represented?
+
+Multiple linear regression model
+
+3. Which parameters belong to the covariance structure and which to the mean value structure?
+
+$\beta_0$ is the parameter for the mean value structure; $\beta_1$, $\beta_2$ and $\sigma^2$ are the parameters for the covariance structure. 
+
+4. What variables are endogenous and which are exogenous? 
+
+Mom_IQ and Mom_Age are the exogenous variable; Kid_Score is the endogenous variable.
+
+5. What are the latent variables and what are the observed variables?
+
+There are 3 observed variables and 1 latent variable
+
+6. what kind of link is assumed between the Mom_age and the kid_score?
+
+Directed arrow (regressive effect)
+
+7. What is the coefficient of the error component?
+
+1 
+
+Load the data set iqkind from the R data file iqkind.Rdata. 
+
+```{r}
+library(lavaan)
+load(url("http://jastag.org/data/iqkind.Rdata"))
+
+str(iqkind)
+```
+
+8. Estimate the model with lavaan
+
+```{r}
+# lavaan syntax
+mod <- '#regression part
+kid_score ~ 1 + mom_iq + mom_age
+# variance part
+kid_score ~~ kid_score'
+
+#Model estimation with lavaan
+
+#fit <- lavaan(mod,iqkind)
+
+fit <- sem(mod,iqkind)
+
+#Display results
+
+summary(fit,rsquare=TRUE)
+```
+
+9. Compare the following output with the one obtained by lm() function.
+
+```{r}
+res <- lm(kid_score ~ mom_iq + mom_age,iqkind)
+summary(res)
+
+```
+
+10. Specify the value of $\beta_0$ (or $\alpha$), $\beta_1$, $\beta_2$ and $\sigma^2$.
+
+$\beta_0 = 17.596$, $\beta_1 = 0.604$, $\beta_2 =0.388$ and $\sigma^2 = 331.026$.
+
+11. Write the final equation of the model using the estimated parameter. 
+
+$kidScore = 17.596 + 0.604 momIq + 0.388 momAge + \epsilon$ $\epsilon \sim N(0,331.026)$
+
+12. Provide an interpretation about the regression coefficients.
+
+If mom_iq remains constant, and mom_age increases by one unit, the predicted kid_score is expected to increase by 0.388 units.
+
+## Exercise 1
+
+We want to investigate if the subjects' age (age) and cigarettes smoked per day (cigday) are predictive of motivation to quit smoking (MQS). 
+
+```{r}
+load("C:/Users/freulif/Desktop/Lezioni2025/SEM1/dataset/electrosmoke.rda")
+```
+
+![Model 2](model1.png)
+
+1. What type of model is represented?
+
+Multiple regression model with two predictors and one dependent variable. 
+
+2. Which parameters belong to the covariance structure and which to the mean value structure?
+
+covariance structure = $\beta_1$, $\beta_2$ and $\sigma^2$
+
+2. Which variables are endogenous and which are exogenous?
+
+Age and SigDay are exogenous while MQS is endogenous.
+
+4. What are the equations of the model?
+
+$$y = \beta_0 + \beta_1 Age + \beta_2 cigday + \epsilon$$ $$\epsilon \sim N(0,\sigma^2)$$
+
+5. What are the latent variables and what are the observed variables?
+
+There are three observed (manifested) variable and one latent variable.
+
+6. What kind of link is assumed between the Age and the MQS?
+
+regressive effect
+
+7. What is the coefficient of the intercept?
+
+$\beta_0$
+
+8. Estimate the model with lavaan. 
+
+```{r}
+mod <- 'MQS ~ 1+ age + cigday
+MQS ~~ MQS'
+
+fit <- sem(mod,electrosmoke)
+
+summary(fit, rsquar=T)
+```
+
+9. Compare the following output with the one obtained by lm() function.
+
+```{r}
+res <- lm(MQS ~ age + cigday,electrosmoke)
+
+summary(res)
+```
+
+10. Specify the value of $\beta_0$ (or $\alpha$), $\beta_1$, $\beta_2$ and $\sigma^2$.
+
+$\beta_0 = 12.363$, $\beta_1 = 0.092$, $\beta_2 = 0.008$ and $\sigma^2 = 5.315$
+
+11. Write the final equation of the model using the estimated parameter. 
+
+$$MQS = 12.363 + 0.092 Age + 0.008 cigday + \epsilon$$ 
+
+$$\epsilon \sim N(0,5.315)$$
+
+12. Provide an interpretation about the regression coefficients. 
+
+If age remains constant, and cigday increases by one unit, the predicted MQS is expected to increase by 0.008 units.
+
+If cigday remains constant, and age increases by one unit, the predicted MQS is expected to increase by 0.092 units.
+
+## Exercise 2
+
+A researcher wants to investigate if adolescent substance use can be predicted by socio-economic status, family environment and parental substance use. The results are stored in the SubstanceUse.Rdata file. 
+
+![Model 3](model3.png)
+
+1. How many endogenous and how many exogenous variables are present in the model?
+
+one endogenous variable and three exogenous variables.
+
+2. What are the equations of the model?
+
+$$y = \beta_0 + \beta_1 Family Environment + \beta_2 Socio-economic Status + \beta_3 Parental SubUse + \epsilon$$ 
+$$\epsilon \sim N(0,\sigma^2)$$
+
+3. What does the $\sigma^2$ parameter denote?
+
+$\sigma^2$ is the variance of the error component. 
+
+4. How many coefficients must the model estimate?
+
+The model has to estimate 4 coefficients and 5 parameters
+
+5. Which parameters belong to the covariance structure and which to the mean value structure?
+
+covariance structure = $\beta_1$, $\beta_2$, $\beta_3$ and $\sigma^2$
+
+mean structure = $\beta_0$
+
+6. Estimate the model with lavaan. 
+
+```{r}
+load("C:/Users/freulif/Desktop/Lezioni2025/SEM1/dataset/SubstanceUse.Rdata")
+
+mod <- 'Adolescent_Substance ~ 1+ SocioEconomic_status + Family_Environment+
+Family_Environment+Parental_Substance
+Adolescent_Substance ~~ Adolescent_Substance'
+
+res <- sem(mod,data)
+
+summary(res,rsquar = TRUE)
+
+```
+
+7. Specify the value of $\beta_0$ (or $\alpha$), $\beta_1$, $\beta_2$, $\beta_3$, and $\sigma^2$.
+
+$\beta_0 = 22.710$; $\beta_1 = 0.197$, $\beta_2 = -0.118$, $\beta_3 = 0.057$, and $\sigma^2 = 0.772$
+
+8. Write the final equation of the model using the estimated parameter. 
+
+$Adolescent_Substance = 22.710 + 0.197 * SocioEconomic_status + -0.118 * Famly_Envrnmnt + 0.057 * Parentl_Sbstnc+ \epsilon$ with $\epsilon \sim N(0,0.772)$
+
+9. Provide an interpretation about all regression coefficients. 
+
+Keeping all other predictors constant, if SocioEconomic_status increases by one unit, the Adolescent_Substance is expected to increase by 0.197 units.
+
+Keeping all other predictors constant, if Famly_Envrnmnt increases by one unit, the Adolescent_Substance is expected to decrease by -0.118 units.
+
+Keeping all other predictors constant, if Parentl_Sbstnc increases by one unit, the Adolescent_Substance is expected to increase by 0.057 units.
+
+## Exercise 3
+
+A researcher wants to investigate if the level of education and gender can predict gross salary. To conduct the study, they recruit a sample of $n$ individuals, representing various genders and educational levels. For each participant, the researcher records their monthly gross salary.
+
+```{r}
+load("C:/Users/freulif/Desktop/Lezioni2025/SEM1/dataset/salary.RData")
+```
+
+1. Estimate the model using the lavaan syntax.
+
+```{r}
+mod <- 'SALARY ~ 1 + EDUCATION + SEX
+SALARY~~SALARY'
+
+res <- sem(mod,d)
+
+summary(res,rsquare=T)
+```
+
+2. Determine the value of the coefficient of determination $R^2$ and provide an interpretation.
+
+The coefficient of determination $R^2$ is 0.040. Approximately 4% of the total variance in the dependent variable is explained by the independent variables.
+
+3 Determine the value of the intercept.
+
+$\beta_0 = 5.260$
+
+4. What is the value of the parameter $\sigma^2$?
+
+$\sigma^2 = 0.889$ 

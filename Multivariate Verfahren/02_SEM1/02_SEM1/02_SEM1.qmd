@@ -1,0 +1,925 @@
+---
+title: "Multivariate Verfahren"
+subtitle: "Termin 2 - SEM 1"
+author: "Psychological Methods HSU | JaStaG"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+
+format:
+  revealjs:
+    #css: 0_css/PsychMeth.css
+    highlight-style: tango
+    keep_md: true
+    logo: 0_images/logo.png
+    slide-level: 2
+    incremental: false
+    mode: standalone
+    menu:
+      side: left
+      width: wide
+    chalkboard:
+      theme: whiteboard
+
+revealjs-plugins:
+  - quiz
+
+filters: 
+  - webr
+---
+
+
+```{r, include=FALSE}
+#install.packages("lavaan")
+#suppressPackageStartupMessages(library(tidyverse))
+suppressPackageStartupMessages(library(lavaan))
+
+knitr::opts_chunk$set(
+  dev.args = list(bg = 'transparent'),
+  fig.align = "center",
+  cache = FALSE
+)
+```
+
+::: {.content-visible when-format="html" unless-format="revealjs"}
+[🚀 Start Sitzung](Lecture.html){.btn .btn-primary}
+:::
+
+::: {.content-visible when-profile="lecture"}
+
+## Einige Literatur zu SEM
+
+<div style="font-size:24px;">
+- Kline, R. B. (2016). *Principle and practice of structural equation modeling* (4th ed.). The Guilford Press.  
+- Beaujean, A. A. (2014). *Latent variable modeling using R: A step by step guide*. Routledge.  
+- Bollen, K. A. (1989). *Structural equations with latent variables*. John Wiley & Sons.  
+- Byrne, B. M. (2012). *Structural equation modeling with Mplus: Basic concepts, applications, and programming*. Routledge. 
+- Hancock, G. R., & Mueller, R. O. (Eds.). (2013). *Structural equation modeling: A second course* (2nd ed.). Information Age Publishing.  
+- Hoyle, R. H. (2023). *Handbook of structural equation modeling* (2nd ed.). Guilford Press.  
+</div>
+
+<div style="display: flex; gap: 10px; align-items: center;">
+
+![](F:/p2266/05_Lehrplattform/Multivariate Verfahren/02_SEM1/0_images/Folie1_Bild1.png){width=15%}
+![](F:/p2266/05_Lehrplattform/Multivariate Verfahren/02_SEM1/0_images/Folie1_Bild2.png){width=15%}
+![](F:/p2266/05_Lehrplattform/Multivariate Verfahren/02_SEM1/0_images/Folie1_Bild3.png){width=15%}
+![](F:/p2266/05_Lehrplattform/Multivariate Verfahren/02_SEM1/0_images/Folie1_Bild4.png){width=15%}
+![](F:/p2266/05_Lehrplattform/Multivariate Verfahren/02_SEM1/0_images/Folie1_Bild5.png){width=15%}
+![](F:/p2266/05_Lehrplattform/Multivariate Verfahren/02_SEM1/0_images/Folie1_Bild6.png){width=15%}
+
+</div>
+
+## Erster Ansatz mit SEMs
+![](F:/p2266/05_Lehrplattform/Multivariate Verfahren/02_SEM1/0_images/Folie2_Bild1.png)
+
+<div class="fragment">
+  <iframe width="560" height="315"
+    src="https://www.youtube.com/embed/wHFrgp3SQMI?start=266"
+    title="YouTube video player"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    allowfullscreen>
+  </iframe>
+</div>
+
+
+## Erster Ansatz mit SEMs
+
+![](F:/p2266/05_Lehrplattform/Multivariate Verfahren/02_SEM1/0_images/Folie3_Bild1.png)
+<div style="font-size:32px;">
+- **Nachteil:** Komplexität bei der Spezifikation und Interpretation von Modellen
+</div>
+
+
+## Allgemeines Vorgehen
+
+![](F:/p2266/05_Lehrplattform/Multivariate Verfahren/02_SEM1/0_images/Folie4_Bild1.png)
+
+## Grafische Modellspezifikationen
+
+**Konventionen zur Erstellung von Pfaddiagrammen:**
+
+![](F:/p2266/05_Lehrplattform/Multivariate Verfahren/02_SEM1/0_images/Folie5_Bild1.png){width=120%}
+
+![](F:/p2266/05_Lehrplattform/Multivariate Verfahren/02_SEM1/0_images/Folie5_Bild2.png){width=120%}
+
+## Grafische Modellspezifikationen
+
+**Konventionen zur Erstellung von Pfaddiagrammen:**
+
+![](F:/p2266/05_Lehrplattform/Multivariate Verfahren/02_SEM1/0_images/Folie6_Bild1.png)
+
+<div style="font-size:28px;">
+- Bei korrekter Spezifikation besteht eine 1:1 Beziehung zwischen grafischer und mathematischer Repräsentation. Häufig werden Pfaddiagramme jedoch einfach zur Illustration verwendet.
+</div>
+
+## Grafische Modellspezifikationen
+<div style="font-size:24px;">
+-   Die Modellparameter werden an die Pfeile geschrieben 
+-   Man unterscheidet zwischen Parametern der <span style="color:blue"> Covariance Structure </span> und den Parametern der <span style="color:gold"> Mean Structure </span>
+-   Parameter der <span style="color:blue"> Covariance Structure </span>:
+</div>
+![](F:/p2266/05_Lehrplattform/Multivariate Verfahren/02_SEM1/0_images/Folie7_Bild1.png){width=75%}
+<div style="font-size:24px;">
+-   Parameter der <span style="color:gold"> Mean Structure </span>:
+</div>
+![](F:/p2266/05_Lehrplattform/Multivariate Verfahren/02_SEM1/0_images/Folie7_Bild2.png){width=10%}
+<div style="font-size:24px;">
+-   Ein Strukturgleichungsmodell hat immer eine Kovarianzstruktur; die Mittelwertstruktur ist optional
+</div>
+
+## Beispiel: Einfache lineare Regression
+
+**Grafische Modellrepräsentation:**
+![](F:/p2266/05_Lehrplattform/Multivariate Verfahren/02_SEM1/0_images/Folie8_Bild1.png)
+
+**Modellgleichung:**
+
+$y = \beta_0 + \beta_1 x_1 + \epsilon$ $\epsilon \sim \mathcal{N}(0, \sigma^2)$
+
+## Übung 1
+
+:::: {.columns}
+::: {.column width="50%"}
+<div style="font-size:28px;">
+- Stellen Sie die zur grafischen Modellrepräsentation korrespondierende Modellgleichung auf.
+
+- Welche Parameter gehören zur Kovarianzstruktur und welche zur Mittelwertstruktur?
+</div>
+:::
+
+::: {.column width="50%"}
+![](F:/p2266/05_Lehrplattform/Multivariate Verfahren/02_SEM1/0_images/Folie9_Bild1.png)
+:::
+::::
+
+<label for="txt">Eigene Antwort</label><br>
+
+```{=html}
+<textarea id="txt" 
+  style="width:100%; height:100px; overflow:hidden; resize:none; font-size:20px;"
+  placeholder="Start typing…"></textarea>
+```
+
+```{=html}
+<script>
+  const ta = document.getElementById('txt');
+  const out = document.getElementById('out');
+  ta.addEventListener('input', () => {
+    ta.style.height = 'auto';
+    ta.style.height = ta.scrollHeight + 'px';
+    out.textContent = ta.value;
+  });
+</script>
+```
+
+## Übung 1 - Lösung
+
+::: {format=html}
+<details>
+<summary><strong>Lösung anzeigen</strong></summary>
+
+![](F:/p2266/05_Lehrplattform/Multivariate Verfahren/02_SEM1/0_images/Folie10_Bild1.png)
+
+<span style="color:blue"> Covariance Structure </span>
+<span style="color:gold"> Mean Structure </span>
+</details>
+:::
+
+## Allgemeines Vorgehen
+
+![](F:/p2266/05_Lehrplattform/Multivariate Verfahren/02_SEM1/0_images/Folie11_Bild1.png)
+
+## Software
+
+![](F:/p2266/05_Lehrplattform/Multivariate Verfahren/02_SEM1/0_images/Folie12_Bild1.png)
+
+## lavaan: <u>La</u>tent <u>Va</u>riable <u>An</u>alysis
+<div style="font-size:28px;">
+- Developer: Yves Rosseel
+- Homepage: http://lavaan.org
+- Feature: Konfirmatorische Faktorenanalyse (CFA): <span style="color:blue"> cfa() </span>
+-   Mittelwertstrukturen/Multi-Gruppen-SEM: <span style="color:blue"> sem() </span>
+-   Veränderungsmessung/latente Wachstumskurvenmodelle: <span style="color:blue"> growth() </span>
+-   Lineare und nicht-lineare Parameterconstraints
+-   Kategoriale beobachtete Variablen (IRT-Modelle)
+-   Verschiedene robuste Schätzer (MLM, MLMV, MLR, WLSMV,...)
+-   Berücksichtigung von fehlenden Werten mittels FIML-Schätzung 
+</div>
+
+## Warum lavaan?
+<div style="font-size:28px;">
+1. Kostenlos
+2. Transparent (open source philosophy)
+3. Reliabel (liefert identische Ergebnisse zu Mplus, EQS via mimic Argument)
+4. Kann in Kombination mit anderen R-Paketen eingesetzt werden (z. B. simsem)
+5. Einfache und benutzerfreundliche Kommandosprache 
+</div>
+
+<div style="font-size:28px;">
+Tutorials und Hilfe-Funktionen:
+
+Homepage: http://lavaan.org
+https://lavaan.ugent.be/resources/books.html
+
+Google-Gruppe:
+https://groups.google.com/d/forum/lavaan
+
+GitHub-Gruppe: https://github.com/yrosseel/lavaan/issues
+
+Literatur:
+Beaujean, A. A. (2014). *Latent Variable Modeling using R: A Step-By-Step Guide.* Routledge.
+</div>
+
+## lavaan: Wichtige Syntax-Elemente
+
+Mit Hilfe dieser Syntax-Elemente lässt sich aus der Modellrepräsentation/-gleichung einfach die Modell-Syntax bauen:
+
+![](F:/p2266/05_Lehrplattform/Multivariate Verfahren/02_SEM1/0_images/Folie14_Bild1.png)
+
+## Beispiel lavaan Syntax: Einfache lineare Regression
+
+:::: {.columns}
+::: {.column width="50%"}
+**Graphische Modellrepräsentation:**
+![](F:/p2266/05_Lehrplattform/Multivariate Verfahren/02_SEM1/0_images/Folie15_Bild1.png){width=50%}
+**Modellgleichung:**
+$y = \beta_0 + \beta_1 x_1 + \epsilon$
+$\epsilon \sim \mathcal{N}(0, \sigma^2)$
+:::
+
+:::{.column width="50%"}
+**lavaan Syntax:**
+```{r, echo = TRUE}
+y ~ 1 + x1
+y ~~ y
+```
+**mit (optionalen) Parameter-Labeln:**
+```{r, echo=TRUE}
+y ~ b0*1 + b1*x1
+y ~~ sigma2*y
+```
+:::
+::::
+
+## Übung 2
+<div style="font-size:32px;">
+Schreiben Sie die lavaan-Syntax für dieses Modell aus *Übung 1* auf:</div>
+
+![](F:/p2266/05_Lehrplattform/Multivariate Verfahren/02_SEM1/0_images/Folie10_Bild1.png){width=65%}
+<label for="txt">Eigene Antwort</label><br>
+
+```{=html}
+<textarea id="txt" 
+  style="width:100%; height:100px; overflow:hidden; resize:none; font-size:20px;"
+  placeholder="Start typing…"></textarea>
+```
+
+```{=html}
+<script>
+  const ta = document.getElementById('txt');
+  const out = document.getElementById('out');
+  ta.addEventListener('input', () => {
+    ta.style.height = 'auto';
+    ta.style.height = ta.scrollHeight + 'px';
+    out.textContent = ta.value;
+  });
+</script>
+```
+
+## Übung 2 - Lösung 
+
+**Grafische Modellrepräsentation & Modellgleichung:**
+![](F:/p2266/05_Lehrplattform/Multivariate Verfahren/02_SEM1/0_images/Folie10_Bild1.png){width=25%}
+
+::: {format=html}
+<details>
+<summary><strong>Lösung anzeigen</strong></summary>
+**lavaan Syntax:**
+
+![](F:/p2266/05_Lehrplattform/Multivariate Verfahren/02_SEM1/0_images/Folie17_Bild2.png){width=75%}
+</details>
+:::
+
+## Allgemeines Vorgehen in lavaan
+
+![](F:/p2266/05_Lehrplattform/Multivariate Verfahren/02_SEM1/0_images/Folie18_Bild1.png)
+
+https://pandar.netlify.app/post/lavaan-intro
+
+## Beispiel: Relationale Aggression von Jugendlichen
+
+Studie von Bull, Schultze & Scheithauer (2009):
+
+:::: {.columns}
+::: {.column width="50%"}
+![](F:/p2266/05_Lehrplattform/Multivariate Verfahren/02_SEM1/0_images/Folie19_Bild1.png)
+:::
+
+::: {.column width="50%"}
+<div style="font-size:24px;">
+1. Datensatz laden und Variablen festlegen:
+- rat1 = relationale Aggression
+- emt1 = Empathie
+- sit1 = soziale Intelligenz
+</div>
+:::
+::::
+
+```{r, echo=TRUE}
+load(url("https://pandar.netlify.app/daten/fairplayer.rda"))
+fairplayer$rat1 <- rowMeans(fairplayer[, c('ra1t1', 'ra2t1', 'ra3t1')],
+  na.rm = TRUE)
+fairplayer$emt1 <- rowMeans(fairplayer[, c('em1t1', 'em2t1', 'em3t1')],
+  na.rm = TRUE)
+fairplayer$sit1 <- rowMeans(fairplayer[, c('si1t1', 'si2t1', 'si3t1')],
+  na.rm = TRUE)
+```
+
+## Beispiel: Relationale Aggression von Jugendlichen
+
+2. Modellschätzung
+```{r, echo=TRUE}
+# lavaan Syntax:
+mod <- 'rat1 ~ 1 + sit1 + emt1
+rat1 ~~ rat1'
+# Modellschätzung:
+fit <- lavaan(mod, fairplayer)
+# Ergebnisse anzeigen:
+summary(fit)
+```
+
+## Aufgabe 1
+<div style="font-size:24px;">
+Sie wollen mithilfe des IQ und des Alters der Mütter den IQ ihrer Kinder vorhersagen. </div>
+
+<div style="font-size:20px;">
+1. Formulieren Sie die Modellgleichung für dieses Untersuchungsmodell.
+2. Stellen Sie das Modell graphisch dar.
+3. Welche Parameter gehören zur Kovarianzstruktur und welche zur Mittelwertstruktur?
+4. Um was für einen Modelltyp handelt es sich hier?
+5. Welche Variablen sind endogen und welche exogen?
+6. Was sind die latenten Variablen und was die beobachteten?
+7. Welche Beziehung wird zwischen dem Alter der Mutter und dem IQ des Kindes angenommen?
+</div>
+
+<label for="txt">Eigene Antwort</label><br>
+
+```{=html}
+<textarea id="txt" 
+  style="width:100%; height:100px; overflow:hidden; resize:none; font-size:20px;"
+  placeholder="Start typing…"></textarea>
+```
+
+```{=html}
+<script>
+  const ta = document.getElementById('txt');
+  const out = document.getElementById('out');
+  ta.addEventListener('input', () => {
+    ta.style.height = 'auto';
+    ta.style.height = ta.scrollHeight + 'px';
+    out.textContent = ta.value;
+  });
+</script>
+```
+
+## Lösung Aufgabe 1
+
+::: {format=html}
+<details>
+<summary><strong>Lösung anzeigen</strong></summary>
+
+<div style="font-size:20px;">
+1. $KidIQ = \beta_0 + \beta_1 * MomIQ  + \beta_2 * MomAGE + \epsilon$ 
+</div>
+2. ![](F:/p2266/05_Lehrplattform/Multivariate Verfahren/02_SEM1/0_images/Aufgabe1_Bild1.png){width=50%}
+
+<div style="font-size:20px;">
+3. Multiples Lineares Regressionsmodell
+4. $\beta_0$ ist der Parameter für die Mittelwertstruktur, $\beta_1$, $\beta_2$ und $\sigma^2$ sind die Parameter für die Kovarianzstruktur. 
+5. MomIQ und MomAGE sind exogene Variablen. KidIQ ist die endogene Variable. 
+6. Es gibt 3 beobachtete Variablen und eine latente Variable. 
+7. Direkte Beziehung (regressiver Effekt).
+</div>
+</details>
+:::
+
+## Aufgabe 2:
+
+Laden Sie den Datensatz iqkind.
+<div style="font-size:28px;">
+1. Schätzen Sie das Modell mit lavaan.
+2. Schätzen Sie das Modell mit der Funktion lm() und vergleichen Sie die Outputs.
+3. Formulieren Sie die finale Modellgleichung unter Nutzung der Schätzparameter aus dem Output. 
+4. Interpretieren Sie die Regressionskoeffizienten
+</div>
+
+```{r, echo=TRUE}
+load(url("https://jastag.org/data/iqkind.Rdata"))
+
+```
+
+```{webr-r}
+
+```
+
+## Lösung Aufgabe 2.1
+
+::: {format=html}
+<details>
+<summary><strong>Lösung anzeigen</strong></summary>
+```{r, echo=TRUE}
+library(lavaan)
+load(url("https://jastag.org/data/iqkind.Rdata"))
+#1. 
+mod <- 'kid_score ~ 1 + mom_iq + mom_age
+kid_score ~~ kid_score'
+fit <- sem(mod, iqkind)
+summary(fit, rsquare = TRUE)
+```
+</details>
+:::
+
+## Lösung Aufgabe 2.2
+
+::: {format=html}
+<details>
+<summary><strong>Lösung anzeigen</strong></summary>
+```{r, echo=TRUE}
+#2.
+res <- lm(kid_score ~ mom_iq + mom_age, data = iqkind)
+summary(res)
+```
+</details>
+:::
+
+## Lösung Aufgabe 2.3 - 2.4
+
+::: {format=html}
+<details>
+<summary><strong>Lösung anzeigen</strong></summary>
+
+3. $KidIQ = 17.596 + 0.604 * MomIQ + 0.388 * MomAGE + \epsilon$ $\epsilon \sim N(0, 331.026)$ 
+4. Wenn MomIQ konstant bleibt und MomAGE sich um eine Einheit erhöht, steigt der vorhergesagte IQ-Wert des Kindes um 0.388 IQ-Punkte. 
+</details>
+:::
+
+## Aufgabe 3a:
+
+Wir wollen untersuchen, ob das Alter (age) und die Anzahl gerauchter Zigaretten pro Tag (cigday) die Motivation mit dem Rauchen aufzuhören (MQS) vorhersagen.
+
+:::: {.columns}
+::: {.column width="50%"}
+![](F:/p2266/05_Lehrplattform/Multivariate Verfahren/02_SEM1/0_images/Aufgabe3_Bild.png)
+:::
+
+::: {.column width="50%"}
+<div style="font-size:20px;">
+1. Welcher Modell-Typ ist hier präsentiert?
+2. Welche Parameter sind Teil der Kovarianzstruktur und welche Teil der Mittelwertstruktur?
+3. Welche Variablen sind endogen und welche exogen?
+4. Wie lautet die Modellgleichung?
+5. Wie lauten die latenten Variablen und was sind die beobachteten Variablen?
+6. Welche Verbindung wird zwischen Alter und MQS angenommen?
+7. Wie lautet der Koeffizient des intercept?
+</div>
+:::
+::::
+
+<label for="txt">Eigene Antwort</label><br>
+
+```{=html}
+<textarea id="txt" 
+  style="width:100%; height:100px; overflow:hidden; resize:none; font-size:20px;"
+  placeholder="Start typing…"></textarea>
+```
+
+```{=html}
+<script>
+  const ta = document.getElementById('txt');
+  const out = document.getElementById('out');
+  ta.addEventListener('input', () => {
+    ta.style.height = 'auto';
+    ta.style.height = ta.scrollHeight + 'px';
+    out.textContent = ta.value;
+  });
+</script>
+```
+
+## Lösung Aufgabe 3a
+
+::: {format=html}
+<details>
+<summary><strong>Lösung anzeigen</strong></summary>
+
+1. Multiples Regressionsmodell mit zwei Prädiktoren und einer abhängigen Variable.
+2. Kovarianzstruktur: $\beta_1$, $\beta_2$ und $\sigma^2$
+3. Exogen: age und cigday, endogen: MQS
+4. $y = \beta_0 + \beta_1age + \beta_2cigday + \epsilon$ $\epsilon \sim N(0, \sigma^2)$
+5. ???
+6. Regressionseffekt
+7. $\beta_0$
+
+</details>
+:::
+
+## Aufgabe 3b
+
+Laden Sie den Datensatz electrosmoke.
+
+```{r, echo=TRUE}
+load(url("https://jastag.org/data/electrosmoke.rda"))
+
+```
+
+8. Schätzen Sie das Modell in lavaan. 
+9. Vergleichen Sie den Output mit dem Output, welcher mit der lm() Funktion zum gleichen Modell generiert wird. 
+
+```{webr-r}
+
+```
+
+## Lösung Aufgabe 3b
+
+::: {format=html}
+<details>
+<summary><strong>Lösung anzeigen</strong></summary>
+
+:::: {.columns}
+::: {.column width="50%"}
+```{r, echo=TRUE}
+#8.
+mod <- 'MQS ~ 1 + age + cigday
+MQS ~~ MQS'
+fit <- sem(mod, electrosmoke)
+summary(fit, rsquar=TRUE)
+```
+:::
+
+::: {.column width="50%"}
+```{r, echo=TRUE}
+#9. 
+res <- lm(MQS ~ age + cigday, electrosmoke)
+summary(res)
+```
+:::
+::::
+
+</details>
+:::
+
+## Aufgabe 3c
+
+10. Spezifizieren Sie die Werte für $\beta_0$ (or $\alpha$), $\beta_1$, $\beta_2$ und $\sigma^2$.
+11. Stellen Sie die finale Modellgleichung mit den geschätzten Parametern auf. 
+12. Interpretieren Sie die Regressionskoeffizienten. 
+
+<label for="txt">Eigene Antwort</label><br>
+
+```{=html}
+<textarea id="txt" 
+  style="width:100%; height:100px; overflow:hidden; resize:none; font-size:20px;"
+  placeholder="Start typing…"></textarea>
+```
+
+```{=html}
+<script>
+  const ta = document.getElementById('txt');
+  const out = document.getElementById('out');
+  ta.addEventListener('input', () => {
+    ta.style.height = 'auto';
+    ta.style.height = ta.scrollHeight + 'px';
+    out.textContent = ta.value;
+  });
+</script>
+```
+
+## Lösung Aufgabe 3c
+
+::: {format=html}
+<details>
+<summary><strong>Lösung anzeigen</strong></summary>
+
+10. $\beta_0$ = 12.363, $\beta_1$ = 0.092, $\beta_2$ = 0.008 und $\sigma^2$ = 5.315
+11. $MQS = 12.363 + 0.092 age + 0.008 cigday + \epsilon$ $\epsilon \sim N(0, 5.315)$
+12. Wenn das Alter konstant bleibt und cigday sich um eine Einheit erhöht, erhöht sich die Vorhersage für MQS um 0.008 Einheiten. Wenn die Anzahl gerauchter Zigaretten pro Tag konstant bleibt und age sich um eine Einheit erhöht, erhöht sich die Vorhersage für MQS um 0.092 Einheiten. 
+
+</details>
+:::
+
+## Aufgabe 4a
+
+Wir wollen untersuchen, ob Substanzkonsum im Jugendalter durch den sozioökonomischen Status, das Familienumfeld und elterlichen Substanzkonsum vorhergesagt werden kann. 
+
+:::: {.columns}
+::: {.column width="50%"}
+![](F:/p2266/05_Lehrplattform/Multivariate Verfahren/02_SEM1/0_images/Aufgabe4_Bild.png)
+:::
+
+::: {.column width="50%"}
+<div style="font-size:20px;">
+1. Wie viele exogene und endogene Variablen sind in diesem Modell vorhanden?
+2. Wie lautet die Modellgleichung?
+3. Was ist die Bedeutung des Parameters $\sigma^2$?
+4. Wie viele Koeffizienten muss das Modell schätzen?
+5. Welche Parameter gehören zur Kovarianzstruktur und welche zur Mittelwertstruktur?
+</div>
+:::
+::::
+
+<label for="txt">Eigene Antwort</label><br>
+
+```{=html}
+<textarea id="txt" 
+  style="width:100%; height:100px; overflow:hidden; resize:none; font-size:20px;"
+  placeholder="Start typing…"></textarea>
+```
+
+```{=html}
+<script>
+  const ta = document.getElementById('txt');
+  const out = document.getElementById('out');
+  ta.addEventListener('input', () => {
+    ta.style.height = 'auto';
+    ta.style.height = ta.scrollHeight + 'px';
+    out.textContent = ta.value;
+  });
+</script>
+```
+
+## Lösung Aufgabe 4a
+
+::: {format=html}
+<details>
+<summary><strong>Lösung anzeigen</strong></summary>
+
+1. Eine endogene und drei exogene Variablen.
+2. <div style="font-size:20px;"> $y = \beta_0 + \beta_1 FamilyEnvironment + \beta_2 Socio-economicStatus + \beta_3 ParentalSubUse + \epsilon$ 
+$\epsilon \sim N(0,\sigma^2)$ </div>
+3. Fehlervarianz
+4. Das Modell muss 4 Koeffizienten und 5 Parameter schätzen.
+5. Kovarianzstruktur: $\beta_1$, $beta_2$, $beta_3$ und $\sigma^2$; Mittelwertstruktur: $beta_0$ 
+
+</details>
+:::
+
+## Aufgabe 4b
+
+Laden Sie den Datensatz SubstanceUse.
+
+```{r, echo=TRUE}
+load(url("https://jastag.org/data/SubstanceUse.Rdata"))
+```
+
+6. Schätzen Sie das Modell in lavaan. 
+
+```{webr-r}
+
+```
+
+## Lösung Aufgabe 4b
+
+::: {format=html}
+<details>
+<summary><strong>Lösung anzeigen</strong></summary>
+```{r, echo=TRUE}
+#6.
+mod <- 'Adolescent_Substance ~ 1 + SocioEconomic_status + Family_Environment +
+Family_Environment + Parental_Substance
+Adolescent_Substance ~~ Adolescent_Substance'
+
+res <- sem(mod, data)
+summary(res, rsquar=TRUE)
+```
+
+</details>
+:::
+
+## Aufgabe 4c
+
+7. Spezifizieren Sie die Werte von $\beta_0$ (or $\alpha$), $\beta_1$, $\beta_2$, $\beta_3$ und $\sigma^2$.
+8. Stellen Sie die finale Modellgleichung mithilfe der geschätzten Parameter auf. 
+9. Interpretieren Sie alle Regressionskoeffizienten. 
+
+<label for="txt">Eigene Antwort</label><br>
+
+```{=html}
+<textarea id="txt" 
+  style="width:100%; height:100px; overflow:hidden; resize:none; font-size:20px;"
+  placeholder="Start typing…"></textarea>
+```
+
+```{=html}
+<script>
+  const ta = document.getElementById('txt');
+  const out = document.getElementById('out');
+  ta.addEventListener('input', () => {
+    ta.style.height = 'auto';
+    ta.style.height = ta.scrollHeight + 'px';
+    out.textContent = ta.value;
+  });
+</script>
+```
+
+## Lösung Aufgabe 4c
+
+::: {format=html}
+<details>
+<summary><strong>Lösung anzeigen</strong></summary>
+
+<div style="font-size:24px;">
+7. $\beta_0$ = 22.710, $\beta_1$ = 0.197, $\beta_2$ = -0.118, $\beta_3$ = 0.057 und $\sigma^2$ = 0.772
+8. $AdolescentSubstance = 22.710 + 0.197 SocioEconomicStatus + -0.118 FamilyEnvironment + 0.057 ParentalSubUse + \epsilon$ $\epsilon \sim N(0, 0.772)$
+9. Wenn alle anderen Prädiktoren konstant gehalten werden ...
+
+... und der sozioökonomische Status um eine Einheit steigt, steigt die Vorhersage des adoleszenten Substanzkonsums um 0,197 Einheiten.
+
+... und das Familienumfeld um eine Einheit steigt, sinkt die Vorhersage des adoleszenten Substanzkonsums um 0,118 Einheiten.
+
+... und der elterliche Konsum um eine Einheit steigt, steigt die Vorhersage des adoleszenten Substanzkonsums um 0,057 Einheiten. 
+</div>
+
+</details>
+:::
+
+## Aufgabe 5
+
+<div style="font-size:28px;">
+Ein Forschungsteam möchte untersuchen, inwiefern der Bildungsstand und das Geschlecht das Bruttogehalt vorhersagen. Hierfür rekrutieren sie eine Stichprobe von *n* Individuen verschiedenen Geschlechts aus unterschiedlichen Bildungsschichten. Das monatliche Gehalt der Probanden wird erhoben. 
+
+Laden Sie den Datensatz salary.
+</div>
+
+```{r, echo=TRUE}
+load(url("https://jastag.org/data/salary.RData"))
+```
+
+<div style="font-size:24px;">
+1. Schätzen Sie das Modell in lavaan. 
+2. Bestimmen Sie den Wert des Determinationskoeffizienten $R^2$ und interpretieren Sie diesen. 
+3. Bestimmen Sie den Wert des Intercept und den Wert von $\sigma^2$. 
+</div>
+
+```{webr-r}
+
+```
+
+## Lösung Aufgabe 5
+
+::: {format=html}
+<details>
+<summary><strong>Lösung anzeigen</strong></summary>
+
+:::: {.columns}
+::: {.column width="50%"}
+```{r, echo=TRUE}
+#1.
+mod <- 'SALARY ~ 1 + EDUCATION + SEX
+SALARY~~SALARY'
+
+res <- sem(mod, d)
+summary(res, rsquar=TRUE)
+```
+:::
+
+::: {.column width="50%"}
+2. $R^2$ = 0.040. Das bedeutet, dass ungefähr 4% der Gesamtvarianz in der abhängigen Variable durch die unabhängigen Variablen (Prädiktoren) erklärt wird. 
+3. $\beta_0$ = 5.260 und $\sigma^2$ = 0.889
+:::
+::::
+
+</details>
+:::
+
+## Seminar in Word konvertieren
+<!-- Download button and script to export the current page content (including user input)
+     to a Word document. The script does not rely on any external libraries and
+     works entirely in the browser.  -->
+<div style="text-align:center; margin:2em 0;">
+  <button
+    id="download-word-button"
+    style="
+      font-size: 1.5rem;       /* larger text */
+      padding: 0.75rem 1.5rem; /* more “clickable” space */
+      line-height: 1.2;        /* vertical centering */
+      border-radius: 0.5rem;   /* rounded corners */
+    "
+  >
+    📄 In Word konvertierten
+  </button>
+</div>
+
+
+<script>
+  // Wait until the DOM is ready before wiring up the click handler.
+  document.addEventListener('DOMContentLoaded', () => {
+    const btn = document.getElementById('download-word-button');
+    if (!btn) return;
+    btn.addEventListener('click', () => {
+      /**
+       * Create a deep clone of the export root so that we can modify it
+       * without altering the on‑screen document. We prefer the Reveal.js
+       * container when present (for slides), otherwise fall back to the body.
+       */
+      const exportRoot = document.querySelector('.reveal') || document.body;
+      const clone = exportRoot.cloneNode(true);
+
+      // Replace each <textarea> with a <pre> element containing the typed value.
+      clone.querySelectorAll('textarea').forEach((ta) => {
+        const replacement = document.createElement('pre');
+        replacement.style.whiteSpace = 'pre-wrap';
+        replacement.textContent = ta.value;
+        ta.parentNode.replaceChild(replacement, ta);
+      });
+
+      /*
+       * Convert interactive WebR elements and other dynamic content so that
+       * they appear correctly in the exported Word document.  Custom
+       * elements starting with the "webr" prefix are used by the
+       * webR/quarto-live environment to provide an in‑browser R editor and
+       * execution environment.  When exporting to a Word document we
+       * replace these custom elements with a simple <pre> block that
+       * contains the element's text (including any code typed by the
+       * student and its resulting output).
+       */
+      clone.querySelectorAll('*').forEach((node) => {
+        if (node.tagName && node.tagName.toLowerCase().startsWith('webr')) {
+          const replacement = document.createElement('pre');
+          replacement.style.whiteSpace = 'pre-wrap';
+          // Use innerText when available to capture only visible text. Fallback
+          // to textContent if innerText is undefined.
+          replacement.textContent = (node.innerText || node.textContent || '').trim();
+          node.parentNode.replaceChild(replacement, node);
+        }
+      });
+
+      /*
+       * Canvas elements (for example, plots generated via R) are not
+       * understood by Word.  Convert each canvas to a PNG image so that
+       * the graphical output appears correctly in the exported document.
+       */
+      clone.querySelectorAll('canvas').forEach((canvas) => {
+        try {
+          const img = document.createElement('img');
+          img.src = canvas.toDataURL('image/png');
+          img.style.maxWidth = '100%';
+          canvas.parentNode.replaceChild(img, canvas);
+        } catch (err) {
+          // If conversion fails (e.g. due to security restrictions), leave the
+          // canvas as is. The canvas content may not render in Word.
+        }
+      });
+
+      /*
+       * Mentimeter live questions are embedded using <iframe> elements.  Since
+       * the content of these iframes cannot be accessed from a different
+       * domain (due to browser security restrictions), we cannot embed the
+       * live results directly into the Word document.  Instead, replace the
+       * iframe with a hyperlink pointing to the Mentimeter presentation.
+       * This way readers of the Word document can click the link to see
+       * the live question and results in a browser.
+       */
+      clone.querySelectorAll('iframe').forEach((iframe) => {
+        try {
+          const src = iframe.getAttribute('src') || '';
+          if (src && src.includes('mentimeter.com')) {
+            const container = document.createElement('p');
+            container.style.margin = '1em 0';
+            const a = document.createElement('a');
+            a.href = src;
+            a.target = '_blank';
+            a.rel = 'noopener noreferrer';
+            a.textContent = 'View Mentimeter question and live results';
+            container.appendChild(a);
+            iframe.parentNode.replaceChild(container, iframe);
+          }
+        } catch (err) {
+          // Ignore errors if replacement fails.
+        }
+      });
+
+      // Wrap the cloned HTML with the minimal Word headers.
+      const html =
+        '<html xmlns:o="urn:schemas-microsoft-com:office:office"' +
+        ' xmlns:w="urn:schemas-microsoft-com:office:word"' +
+        ' xmlns="http://www.w3.org/TR/REC-html40">' +
+        '<head><meta charset="utf-8"></head><body>' +
+        clone.innerHTML +
+        '</body></html>';
+      // Create a Blob with the proper MIME type for Word.
+      const blob = new Blob(['\ufeff', html], {
+        type: 'application/msword'
+      });
+      // Generate a temporary object URL for the blob and trigger a download.
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'presentation_with_answers.doc';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      // Release the object URL.
+      URL.revokeObjectURL(url);
+    });
+  });
+</script>
+:::
+

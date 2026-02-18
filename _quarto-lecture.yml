@@ -1,0 +1,13 @@
+format:
+  revealjs:
+    #css: 0_css/PsychMeth.css
+    highlight-style: tango
+    keep_md: true
+    logo: 0_css/logo.png
+    slide-level: 2
+    incremental: true
+    mode: standalone
+    output-file: Lecture.html
+
+
+
