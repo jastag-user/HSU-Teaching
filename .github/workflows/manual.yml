@@ -44,5 +44,6 @@ jobs:
           quarto render
 
       - name: Publish to GitHub Pages
-        run: |
-          quarto publish gh-pages --no-prompt
+        uses: quarto-dev/quarto-actions/publish@v2
+        with:
+          target: gh-pages
